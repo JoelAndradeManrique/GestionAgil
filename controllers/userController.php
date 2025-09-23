@@ -66,5 +66,73 @@ class userController {
         }
     }
 
+    
+
+    /**
+ * Procesa la solicitud de recuperación de contraseña.
+ */
+public function solicitarRecuperacion($datos) {
+    if (!isset($datos->email)) {
+        return ['estado' => 400, 'mensaje' => 'Se requiere el correo electrónico.'];
+    }
+
+    // Verificar si el usuario existe
+    $usuario = $this->modeloUsuario->findByEmail($datos->email);
+    if (!$usuario) {
+        // Por seguridad, damos una respuesta genérica aunque el email no exista
+        return ['estado' => 200, 'mensaje' => 'Si tu correo está en nuestro sistema, recibirás un enlace para recuperar tu contraseña.'];
+    }
+
+    // Generar un token seguro y único
+    $token = bin2hex(random_bytes(32));
+
+    // Establecer una fecha de expiración (ej. 1 hora desde ahora)
+    $expiracion = date('Y-m-d H:i:s', time() + 3600);
+
+    // Guardar el token en la base de datos
+    if ($this->modeloUsuario->guardarResetToken($datos->email, $token, $expiracion)) {
+        // --- SIMULACIÓN DE ENVÍO DE CORREO ---
+        // En una app real, aquí iría el código para enviar el email.
+        // Por ahora, devolvemos el token en la respuesta para poder probar.
+        $linkRecuperacion = "http://tusitio.com/reset.html?token=" . $token;
+
+        return [
+            'estado' => 200, 
+            'mensaje' => 'Si tu correo está en nuestro sistema, recibirás un enlace para recuperar tu contraseña.',
+            'simulacion_email' => 'Correo enviado a ' . $datos->email . ' con el link: ' . $linkRecuperacion
+            ];
+        } else {
+            return ['estado' => 500, 'mensaje' => 'Error al procesar la solicitud.'];
+        }
+    }
+
+
+
+        /**
+     * Procesa el reseteo de la contraseña usando un token.
+     */
+    public function resetearContrasena($datos) {
+        if (!isset($datos->token) || !isset($datos->nueva_contrasena)) {
+            return ['estado' => 400, 'mensaje' => 'Se requiere el token y la nueva contraseña.'];
+        }
+
+        // Buscar si el token es válido y no ha expirado
+        $usuario = $this->modeloUsuario->buscarPorResetToken($datos->token);
+
+        if ($usuario) {
+            $hash = password_hash($datos->nueva_contrasena, PASSWORD_BCRYPT);
+            // Reutilizamos el método de actualizar contraseña, ahora también limpia el token
+            if ($this->modeloUsuario->updatePassword($usuario['id_usuario'], $hash) > 0) {
+                return ['estado' => 200, 'mensaje' => 'Contraseña actualizada con éxito.'];
+            } else {
+                return ['estado' => 500, 'mensaje' => 'Error al actualizar la contraseña.'];
+            }
+        } else {
+            return ['estado' => 400, 'mensaje' => 'Token inválido o expirado.'];
+        }
+    }
+
+
+   
 }
 ?>

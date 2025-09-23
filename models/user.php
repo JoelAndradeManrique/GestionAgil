@@ -46,5 +46,44 @@ class user {
         $stmt->execute();
         return $stmt->affected_rows;
     }
+
+
+        /**
+     * Guarda un token de reseteo y su fecha de expiración para un usuario.
+     * @param string $email El email del usuario.
+     * @param string $token El token generado.
+     * @param string $fechaExpiracion La fecha en que el token expira (formato Y-m-d H:i:s).
+     * @return bool True si fue exitoso, false en caso contrario.
+     */
+    public function guardarResetToken($email, $token, $fechaExpiracion) {
+        $stmt = $this->conexion->prepare("UPDATE Usuarios SET reset_token = ?, reset_token_expires = ? WHERE email = ?");
+        $stmt->bind_param("sss", $token, $fechaExpiracion, $email);
+        return $stmt->execute();
+    }
+
+
+
+
+        /**
+     * Busca un usuario por su token de reseteo y verifica que no haya expirado.
+     */
+    public function buscarPorResetToken($token) {
+        $stmt = $this->conexion->prepare("SELECT id_usuario, email FROM Usuarios WHERE reset_token = ? AND reset_token_expires > NOW()");
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        return $resultado->fetch_assoc();
+    }
+
+    /**
+     * Actualiza la contraseña de un usuario por su ID y limpia el token.
+     */
+    public function updatePassword($id_usuario, $contrasena_hash) {
+        $stmt = $this->conexion->prepare("UPDATE Usuarios SET contrasena_hash = ?, reset_token = NULL, reset_token_expires = NULL WHERE id_usuario = ?");
+        $stmt->bind_param("si", $contrasena_hash, $id_usuario);
+        $stmt->execute();
+        return $stmt->affected_rows;
+    }
+
 }
 ?>
