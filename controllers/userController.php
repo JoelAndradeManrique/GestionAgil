@@ -133,6 +133,38 @@ public function solicitarRecuperacion($datos) {
     }
 
 
+    
+     /**
+     * Procesa el inicio de sesión de un usuario.
+     * @param object $datos Los datos del front-end (email, contrasena).
+     * @return array Un array con el estado y mensaje/datos del usuario.
+     */
+    public function login($datos) {
+        // 1. Validar que llegaron ambos datos
+        if (!isset($datos->email) || !isset($datos->contrasena)) {
+            return ['estado' => 400, 'mensaje' => 'Se requiere email y contraseña.'];
+        }
+
+        // 2. Buscar al usuario por su email usando el modelo
+        $usuario = $this->modeloUsuario->findByEmail($datos->email);
+
+        // 3. Verificar si el usuario existe Y si la contraseña coincide
+        if ($usuario && password_verify($datos->contrasena, $usuario['contrasena_hash'])) {
+            // ¡Éxito! La contraseña coincide con el hash guardado
+            unset($usuario['contrasena_hash']); // No enviar el hash en la respuesta
+            unset($usuario['reset_token']); // No enviar datos sensibles
+            unset($usuario['reset_token_expires']);
+            
+            return ['estado' => 200, 'mensaje' => 'Login exitoso.', 'datos' => $usuario];
+        } else {
+            // Error: O el usuario no existe, o la contraseña es incorrecta.
+            // Se devuelve el mismo error genérico por seguridad.
+            return ['estado' => 401, 'mensaje' => 'Inicio de sesión fallido. Puede que algo sea incorrecto, intenta de nuevo.'];
+        }
+    }
+
+
+
    
 }
 ?>

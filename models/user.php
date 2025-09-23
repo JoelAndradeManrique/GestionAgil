@@ -14,12 +14,13 @@ class user {
      * @return array|null Los datos del usuario si se encuentra, o null.
      */
     public function findByEmail($email) {
-        $stmt = $this->conexion->prepare("SELECT id_usuario FROM Usuarios WHERE email = ?");
+        $stmt = $this->conexion->prepare("SELECT * FROM Usuarios WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $resultado = $stmt->get_result();
         return $resultado->fetch_assoc();
     }
+
 
     /**
      * Inserta un nuevo usuario en la base de datos.
@@ -84,6 +85,12 @@ class user {
         $stmt->execute();
         return $stmt->affected_rows;
     }
+
+
+   
+
+   
+    
 
 }
 ?>
