@@ -34,5 +34,17 @@ class user {
         $stmt->bind_param("ssss", $nombre, $email, $contrasena_hash, $rol);
         return $stmt->execute();
     }
+
+    /**
+     * Elimina un usuario de la base de datos por su ID.
+     * @param int $id_usuario El ID del usuario a eliminar.
+     * @return int El número de filas afectadas (1 si se borró, 0 si no se encontró).
+     */
+    public function delete($id_usuario) {
+        $stmt = $this->conexion->prepare("DELETE FROM Usuarios WHERE id_usuario = ?");
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+        return $stmt->affected_rows;
+    }
 }
 ?>

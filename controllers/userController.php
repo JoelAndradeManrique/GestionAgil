@@ -37,5 +37,34 @@ class userController {
             return ['estado' => 500, 'mensaje' => 'Hubo un error en el servidor al registrar el usuario.'];
         }
     }
+
+
+    /**
+     * Procesa la lógica para eliminar un usuario.
+     * @param object $datos Los datos recibidos, que deben contener el id_usuario.
+     * @return array Un array con el estado y mensaje de la operación.
+     */
+    public function eliminarUsuario($datos) {
+        // 1. Validar que se recibió el ID del usuario
+        if (!isset($datos->id_usuario)) {
+            return ['estado' => 400, 'mensaje' => 'Se requiere el id_usuario para eliminar.'];
+        }
+
+        // 2. Intentar eliminar al usuario usando el Modelo
+        $filasAfectadas = $this->modeloUsuario->delete($datos->id_usuario);
+
+        // 3. Verificar el resultado
+        if ($filasAfectadas > 0) {
+            return ['estado' => 200, 'mensaje' => 'Usuario eliminado con éxito.'];
+        } else {
+            // Este error puede ocurrir si el usuario ya fue eliminado o nunca existió.
+            // Ojo: También puede ocurrir si el usuario tiene registros asociados (FK).
+            if ($this->modeloUsuario->conexion->errno == 1451) {
+                 return ['estado' => 409, 'mensaje' => 'Conflicto: No se puede eliminar el usuario porque tiene registros asociados (cursos, inscripciones, etc.).'];
+            }
+            return ['estado' => 404, 'mensaje' => 'Usuario no encontrado o ya fue eliminado.'];
+        }
+    }
+
 }
 ?>
