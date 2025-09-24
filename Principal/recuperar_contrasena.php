@@ -1,46 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RECUPERAR CONTRASEÑA</title>
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/estilos.css">
+  <link rel="stylesheet" href="../Principal/estilos.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <style>
+    #mensaje a { color: #007bff; text-decoration: underline; }
+    /* Puedes añadir los estilos .exito y .error que te di antes */
+  </style>
 </head>
 <body>
-  <!-- include parte inferior del banner -->
-  <?php
-  include("arriba.php")
-  ?>
-  <!-- panel principal -->
+  <?php // include("arriba.php"); ?>
   <div class="contenedor2">
-    <!-- menu principal -->
-  <div class="contenedor3">
-    <h1>¿Has olvidado la <br><br><br>contraseña?</h1>
-    <br><br><br>
-      <!-- actualizar usuario -->
-      <form action="#" method="POST"> <!--form para verificar datos en la base-->
-        <!-- verificar email -->
-         <div class="form_grupo">
-         <label for="email">CORREO <br> ELECTRÓNICO</label>
-         <br>
-         <input type="email" id="email" name="email">
-         </div>
-         <!-- verificar contrasena -->
-          <div class="form_grupo">
-          <label for="contrasena_hash">NUEVA <br>CONTRASEÑA</label>
-          <br>
-          <input type="password" id="contrasena_hash" name="contrasena_hash">
-          </div>
-          <!-- registro para verificar usuario-->
-           <div class="btn">
-          <input type="submit" id="btn_actualizar" value="Ingresar">
-          </div>
+    <div class="contenedor3">
+      <h1>Recuperar Contraseña</h1>
+      <p>Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.</p>
+      
+      <div id="mensaje"></div>
+      
+      <form id="solicitarForm">
+        <div class="form_grupo">
+          <label for="email">CORREO ELECTRÓNICO</label><br>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="btn">
+          <input type="submit" value="ENVIAR ENLACE">
+        </div>
       </form>
+    </div>
   </div>
-  <br><br><br><br><br>
-  </div>
+
+  <script>
+  $(document).ready(function() {
+    $("#solicitarForm").on("submit", function(event) {
+      event.preventDefault();
+      $("#mensaje").empty();
+
+      let email = $("#email").val().trim();
+      if (email === '') {
+        $("#mensaje").text("Por favor, ingresa tu correo.").css('color', 'red');
+        return;
+      }
+
+      $.ajax({
+        url: '../api/solicitarRecuperacion.php',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ email: email }),
+        
+        success: function(response) {
+          // Para la práctica, mostramos el enlace directamente
+          let mensaje = response.mensaje + "<br><br><strong>Enlace simulado:</strong><br>";
+          let enlace = $('<a>', {
+            href: response.simulacion_email.split(': ')[1], // Extraemos solo la URL
+            text: 'Haz clic aquí para restablecer tu contraseña',
+            target: '_blank' // Abrir en una nueva pestaña
+          });
+          $("#mensaje").html(mensaje).append(enlace).css('color', 'green');
+        },
+        
+        error: function() {
+          $("#mensaje").text("Ocurrió un error. Intenta de nuevo.").css('color', 'red');
+        }
+      });
+    });
+  });
+  </script>
 </body>
 </html>

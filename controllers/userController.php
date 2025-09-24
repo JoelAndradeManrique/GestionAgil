@@ -16,25 +16,28 @@ class userController {
      * @return array Un array con el estado y mensaje de la operación.
      */
     public function registrar($datos) {
-        // 1. Validar que los datos necesarios llegaron
-        if (!isset($datos->nombre) || !isset($datos->email) || !isset($datos->contrasena) || !isset($datos->rol)) {
+        if (!isset($datos->nombre) || !isset($datos->email) || !isset($datos->contrasena)) {
             return ['estado' => 400, 'mensaje' => 'Datos incompletos. Se requiere nombre, email y contraseña.'];
         }
 
-        // 2. Verificar si el usuario ya existe (usando el Modelo)
         if ($this->modeloUsuario->findByEmail($datos->email)) {
             return ['estado' => 409, 'mensaje' => 'El correo electrónico ya está en uso.'];
         }
 
-        // 3. Hashear la contraseña por seguridad
         $hash = password_hash($datos->contrasena, PASSWORD_BCRYPT);
-        $rol = $datos->rol ?? 'alumno'; // Asignar 'alumno' como rol por defecto
+        $rol = $datos->rol ?? 'alumno';
 
-        // 4. Intentar crear el usuario (usando el Modelo)
-        if ($this->modeloUsuario->create($datos->nombre, $datos->email, $hash, $rol)) {
+        // Intentamos crear el usuario
+        $resultado = $this->modeloUsuario->create($datos->nombre, $datos->email, $hash, $rol);
+
+        if ($resultado) {
+            // Si el modelo devuelve 'true', el registro fue exitoso.
             return ['estado' => 201, 'mensaje' => 'Usuario registrado con éxito.'];
         } else {
-            return ['estado' => 500, 'mensaje' => 'Hubo un error en el servidor al registrar el usuario.'];
+            // Si el modelo devuelve 'false', algo falló en la base de datos.
+            // Le pedimos al controlador que nos diga cuál fue el error de MySQL.
+            $error_db = $this->modeloUsuario->conexion->error;
+            return ['estado' => 500, 'mensaje' => 'Error al registrar el usuario en la base de datos.', 'error_db' => $error_db];
         }
     }
 
@@ -94,7 +97,7 @@ public function solicitarRecuperacion($datos) {
         // --- SIMULACIÓN DE ENVÍO DE CORREO ---
         // En una app real, aquí iría el código para enviar el email.
         // Por ahora, devolvemos el token en la respuesta para poder probar.
-        $linkRecuperacion = "http://tusitio.com/reset.html?token=" . $token;
+        $linkRecuperacion = "http://localhost/GestionAgil/Principal/resetear_contrasena.php?token=" . $token;
 
         return [
             'estado' => 200, 

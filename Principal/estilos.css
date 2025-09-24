@@ -3,12 +3,16 @@
   margin: 0;
   padding: 0;
 }
+
 body{
   font-size: 16px;
-  line-height: 24px;
+  line-height: 1;
   color: #333;
-  background-color: white;
+  background-color: #f4f7f6;
 }
+
+
+
 .centrar{
   text-align: center;
 }
@@ -32,6 +36,12 @@ body{
 }
 
 .contenedor2{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px); /* Ocupa el resto de la pantalla */
+  padding: 2rem; /* Espacio por si la pantalla es muy pequeña */
+
   background-image: url('imagenes/banner_principal.png');
   background-size: 85%;
   background-repeat: no-repeat;
@@ -39,52 +49,90 @@ body{
   width: 100%;
   height: 100%;
 }
-.contenedor3{
-  margin: 0 auto;
-  max-width: 40%;
-  background-color: rgba(255, 255, 255, 0.8);
-  border: 2px solid rgba(255, 255, 255, 0.8);
-}
-.contenedor3 h1{
-  margin-top: 35px;
-  font-size: 63px;
-  font-family: 'Roboto', sans-serif;
-  font-weight: normal;
+.contenedor3 {
+  width: 100%;
+  max-width: 480px; /* Ancho máximo para que no se estire demasiado en pantallas grandes */
+  background-color: rgba(255, 255, 255, 0.9); /* Un poco más opaco para leer mejor */
+  border-radius: 12px; /* Bordes redondeados */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  padding: 2.5rem; /* Espaciado interno generoso */
   text-align: center;
 }
-.contenedor3 p{
-  margin-top: 65px;
-  margin-bottom: 45px;
-  font-size: 39px;
-  font-family: 'Roboto', sans-serif;
-  text-align: center;
-}
-.contenedor3 input{
-  width: 350px;
-  height: 60px;
-  margin-top: 15px;
-  padding: 10px;
-  background-color: #AAD3E5;
-  border: 1px solid #AAD3E5;
-}
-.form_grupo{
-  font-family: 'Roboto', sans-serif;
-  font-size: 30px;
-  margin-left: 55px;
-  margin-bottom: 35px;
+
+.contenedor3 h1 {
+  font-size: 2.8rem; /* Tamaño más controlado */
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #1e3a8a; /* Azul más oscuro */
   line-height: 1.2;
 }
-.btn{
-  font-size: 30px;
-  margin-left: 55px;
-  margin-bottom: 30px;
+
+.contenedor3 p {
+  font-size: 1.1rem; /* Tamaño más controlado */
+  margin-top: 0;
+  margin-bottom: 2rem;
+  color: #555;
 }
-.btn input{
+
+.contenedor3 p a {
+    color: #2563eb;
+    font-weight: bold;
+}
+.form_grupo {
+  text-align: left; /* Alineamos etiquetas a la izquierda */
+  margin-bottom: 1.5rem; /* Espacio uniforme entre grupos */
+}
+
+.form_grupo label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+/* Estilo unificado para inputs y la nueva lista desplegable */
+.contenedor3 input[type="text"],
+.contenedor3 input[type="email"],
+.contenedor3 input[type="password"],
+.contenedor3 select {
+  width: 100%;
+  height: auto; /* Altura automática basada en el padding */
+  padding: 12px 15px; /* Espaciado interno */
+  font-size: 1rem;
+  background-color: #f9fafb;
+  border: 1px solid #d1d5db; /* Borde más sutil */
+  border-radius: 8px; /* Bordes más redondeados */
+  transition: all 0.3s ease; /* Transición suave */
+}
+
+/* Efecto al hacer clic en un campo */
+.contenedor3 input:focus,
+.contenedor3 select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+}
+
+/* --- BOTÓN DE ENVÍO --- */
+.btn {
+  margin-top: 2rem; /* Espacio extra antes del botón */
+}
+
+.btn input {
+  width: 100%; /* El botón ocupa todo el ancho */
+  padding: 15px; /* Más cómodo para hacer clic */
   font-weight: bold;
-  font-size: 25px;
-  font-family: 'Roboto', sans-serif;
-  background-color: #6999FF;
+  font-size: 1.1rem;
+  color: white;
+  background-color: #2563eb;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
-.btn input:hover{
-  background-color: #2019d5;
+
+.btn input:hover {
+  background-color: #1e40af; /* Azul más oscuro al pasar el mouse */
+  transform: translateY(-3px); /* Pequeño efecto de elevación */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
