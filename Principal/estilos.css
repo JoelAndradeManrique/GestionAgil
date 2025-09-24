@@ -74,17 +74,17 @@ body{
   margin-bottom: 35px;
   line-height: 1.2;
 }
-.registrar_btn{
+.btn{
   font-size: 30px;
   margin-left: 55px;
   margin-bottom: 30px;
 }
-.registrar_btn input{
+.btn input{
   font-weight: bold;
   font-size: 25px;
   font-family: 'Roboto', sans-serif;
   background-color: #6999FF;
 }
-.registrar_btn input:hover{
+.btn input:hover{
   background-color: #2019d5;
 }

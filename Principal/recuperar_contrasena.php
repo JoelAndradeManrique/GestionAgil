@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>INICIAR SESION</title>
+  <title>RECUPERAR CONTRASEÑA</title>
    <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -14,13 +14,13 @@
   <?php
   include("arriba.php")
   ?>
-  <!-- panel principal inicio de sesion -->
+  <!-- panel principal -->
   <div class="contenedor2">
-    <!-- menu principal inicio de sesion -->
+    <!-- menu principal -->
   <div class="contenedor3">
-    <h1>HOLA</h1>
-    <p>Incia sesión para continuar</p>
-      <!-- registro del usuario -->
+    <h1>¿Has olvidado la <br><br><br>contraseña?</h1>
+    <br><br><br>
+      <!-- actualizar usuario -->
       <form action="#" method="POST"> <!--form para verificar datos en la base-->
         <!-- verificar email -->
          <div class="form_grupo">
@@ -30,13 +30,13 @@
          </div>
          <!-- verificar contrasena -->
           <div class="form_grupo">
-          <label for="contrasena_hash">CONTRASEÑA</label>
+          <label for="contrasena_hash">NUEVA <br>CONTRASEÑA</label>
           <br>
           <input type="password" id="contrasena_hash" name="contrasena_hash">
           </div>
           <!-- registro para verificar usuario-->
            <div class="btn">
-          <input type="submit" id="btn_ingresar" value="Ingresar">
+          <input type="submit" id="btn_actualizar" value="Ingresar">
           </div>
       </form>
   </div>

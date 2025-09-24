@@ -42,7 +42,7 @@
           <input type="password" id="contrasena_hash" name="contrasena_hash">
           </div>
           <!-- registro para envio -->
-           <div class="registrar_btn">
+           <div class="btn">
           <input type="submit" id="btn_validar" value="REGISTRARME">
           </div>
       </form>
