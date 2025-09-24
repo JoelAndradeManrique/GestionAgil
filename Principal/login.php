@@ -7,7 +7,8 @@
    <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" href="../css/estilos.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
   <!-- include parte inferior del banner -->
@@ -49,5 +50,27 @@
   </div>
   <br><br><br><br><br>
   </div>
+
+  <!--validacion-->
+  <script>
+    $("#btn_validar").click(function () {
+      if ($("#nombre").val().trim() == '') {
+        alert("ESCRIBE tu NOMBRE");
+        $("#nombre").focus();
+        return 0;
+      }
+     if ($("#email").val().trim() == '') {
+        alert("ESCRIBE tu EMAIL");
+        $("#email").focus();
+        return 0;
+      }
+
+      if ($("#contrasena_hash").val().trim() == '') {
+        alert("ESCRIBE tu CONTRASEÑA");
+        $("#contrasena_hash").focus();
+        return 0;
+      }
+    });
+  </script>
 </body>
 </html>
