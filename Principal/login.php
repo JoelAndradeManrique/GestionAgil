@@ -23,7 +23,7 @@
     <p>¿Ya estás registrado? Inicia sesión
      <br><br> aquí.</p>
       <!-- registro del usuario -->
-      <form action="#" method="POST"> <!--form para enviar datos a la base-->
+      <form action="si.php" method="POST"> <!--form para enviar datos a la base-->
         <!-- registro nombre -->
         <div class="form_grupo">
         <label for="nombre">NOMBRE</label>
@@ -53,21 +53,29 @@
 
   <!--validacion-->
   <script>
-    $("#btn_validar").click(function () {
+    $("#btn_validar").click(function (event) {
+
+      //vallidacion del nombre
       if ($("#nombre").val().trim() == '') {
         alert("ESCRIBE tu NOMBRE");
         $("#nombre").focus();
-        return 0;
-      }
-     if ($("#email").val().trim() == '') {
-        alert("ESCRIBE tu EMAIL");
-        $("#email").focus();
+        event.preventDefault();
         return 0;
       }
 
+      // Validación del email
+     if ($("#email").val().trim() == '') {
+        alert("ESCRIBE tu EMAIL");
+        $("#email").focus();
+        event.preventDefault();
+        return 0;
+      }
+
+      // Validación de la contraseña
       if ($("#contrasena_hash").val().trim() == '') {
         alert("ESCRIBE tu CONTRASEÑA");
         $("#contrasena_hash").focus();
+        event.preventDefault();
         return 0;
       }
     });
