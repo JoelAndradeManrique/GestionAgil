@@ -32,7 +32,7 @@ body{
 }
 
 .contenedor2{
-  background-image: url('imagenes/banner_principal.png');
+  background-image: url('../Principal/imagenes/banner_principal.png');
   background-size: 85%;
   background-repeat: no-repeat;
   background-position: center;
