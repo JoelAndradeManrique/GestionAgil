@@ -74,7 +74,7 @@
         
         success: function(response) {
           $("#mensaje").text(response.mensaje + " Serás redirigido al login.").css('color', 'green');
-          setTimeout(() => window.location.href = 'iniciar_sesion.php', 3000);
+          setTimeout(() => window.location.href = 'inicio_sesion.php', 3000);
         },
         
         error: function(jqXHR) {

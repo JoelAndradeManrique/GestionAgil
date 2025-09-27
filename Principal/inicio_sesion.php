@@ -26,7 +26,11 @@
         <div class="form_grupo">
           <label for="contrasena">CONTRASEÑA</label><br>
           <input type="password" id="contrasena" name="contrasena" required>
+          
+          <a href="recuperar_contrasena.php" class="enlace-olvido">¿Olvidaste tu contraseña?</a>
+
         </div>
+        
         <div class="btn">
           <input type="submit" value="Ingresar">
         </div>
