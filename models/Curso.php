@@ -146,18 +146,27 @@ class Curso {
         return $cursos;
     }
 
-     /**
-     * Busca cursos por un término de búsqueda.
+    /**
+     * Obtiene todos los cursos publicados, junto con el nombre del instructor.
+     * @return array Una lista de todos los cursos.
      */
-    public function buscarCursosPorTermino($termino) {
-        if (empty(trim($termino))) {
-            return ['estado' => 400, 'mensaje' => 'Se requiere un término de búsqueda.'];
-        }
-
-        $cursos = $this->modeloCurso->buscarCursos($termino);
+    public function getAll() {
+        $cursos = [];
+        $query = "SELECT c.*, u.nombre as nombre_instructor 
+                  FROM Cursos c
+                  JOIN Usuarios u ON c.id_instructor = u.id_usuario
+                  WHERE c.estado = 'publicado' 
+                  ORDER BY c.id_curso DESC";
         
-        return ['estado' => 200, 'datos' => $cursos];
+        $resultado = $this->conexion->query($query);
+
+        while ($fila = $resultado->fetch_assoc()) {
+            $cursos[] = $fila;
+        }
+        return $cursos;
     }
+
+     
 
 }
 ?>

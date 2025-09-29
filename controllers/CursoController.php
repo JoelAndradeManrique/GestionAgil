@@ -122,5 +122,13 @@ class CursoController {
         
         return ['estado' => 200, 'datos' => $cursos];
     }
+
+    /**
+     * Obtiene todos los cursos para el catálogo principal.
+     */
+    public function obtenerTodosLosCursos() {
+        $cursos = $this->modeloCurso->getAll();
+        return ['estado' => 200, 'datos' => $cursos];
+    }
 }
 ?>
