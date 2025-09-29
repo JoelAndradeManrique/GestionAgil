@@ -33,7 +33,7 @@
                     </div>
                     <div class="form-group">
                         <label for="cupos">CUPOS DISPONIBLES*</label>
-                        <input type="number" id="cupos" name="cupos" placeholder="EJEM.120 DISPONIBLES" >
+                        <input type="number" id="cupos" name="cupos" placeholder="EJEM.120 DISPONIBLES"  min="1" max="120">
                     </div>
                 </div>
 
