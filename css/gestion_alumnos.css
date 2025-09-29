@@ -1,0 +1,244 @@
+/* Estilos básicos de la página */
+body {
+    /* Define una fuente limpia y sin serifa */
+    font-family: Arial, sans-serif; 
+    /* Fondo gris claro que simula el entorno de la aplicación */
+    background-color: #f0f2f5; 
+    /* Elimina márgenes predeterminados del body */
+    margin: 0; 
+    /* Alineación vertical y horizontal para centrar el contenedor */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinea el contenido en la parte superior */
+    padding-top: 50px; /* Espacio en la parte superior de la página */
+}
+
+/* Contenedor principal del diseño */
+.container {
+    /* Anchura máxima para que se vea bien en pantallas grandes */
+    width: 90%; 
+    /* Anchura máxima absoluta para controlar el tamaño */
+    max-width: 1200px; 
+    /* Borde redondeado suave para el contenedor principal */
+    border-radius: 8px; 
+    /* Sombra ligera para darle profundidad, se aplica al contenedor exterior */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    /* Asegura que el contenido (como la cabecera) no se desborde */
+    overflow: hidden; 
+}
+
+/* --- ESTILOS DEL ENCABEZADO SUPERIOR (VERDE) --- */
+
+.header {
+    /* Color de fondo verde vibrante (similar al de la imagen) */
+    background-color: #38c172; 
+    /* Espaciado interno (padding) dentro de la barra */
+    padding: 15px 25px; 
+    /* Usa Flexbox para alinear el título y el botón en extremos opuestos */
+    display: flex; 
+    justify-content: space-between; /* Distribuye el espacio entre los elementos */
+    align-items: center; /* Centra verticalmente los elementos */
+    /* Bordes redondeados solo en la parte superior */
+    border-top-left-radius: 8px; 
+    border-top-right-radius: 8px;
+}
+
+.header-title {
+    /* Alinea el icono y el texto del título */
+    display: flex; 
+    align-items: center;
+    /* Color de texto blanco para contraste */
+    color: white; 
+    /* Pone el texto en mayúsculas como en la imagen */
+    font-weight: bold; 
+    font-size: 16px;
+}
+
+.header-title i {
+    /* Margen a la derecha del icono de información */
+    margin-right: 10px; 
+    /* Tamaño del icono */
+    font-size: 18px; 
+}
+
+/* Estilos del botón "Nuevo Registro" */
+.new-record-btn {
+    /* Fondo blanco para el botón */
+    background-color: white; 
+    /* Color del texto verde */
+    color: #38c172; 
+    /* Espaciado interno */
+    padding: 8px 15px; 
+    /* Borde redondeado */
+    border-radius: 5px; 
+    /* Elimina el borde por defecto del botón */
+    border: none; 
+    /* Pone el texto en negrita */
+    font-weight: bold; 
+    /* Cambia el cursor para indicar que es clickeable */
+    cursor: pointer; 
+    /* Alinea el icono y el texto del botón */
+    display: flex; 
+    align-items: center;
+    /* Sombra ligera */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+.new-record-btn i {
+    /* Margen a la derecha del icono + */
+    margin-right: 5px; 
+}
+
+/* --- ESTILOS DEL CONTENIDO (CAJA BLANCA) --- */
+
+.content-box {
+    /* Fondo blanco para el área de búsqueda y tabla */
+    background-color: white; 
+    /* Espaciado interno en los lados y abajo */
+    padding: 20px 25px 30px 25px; 
+    /* Borde redondeado solo en la parte inferior */
+    border-bottom-left-radius: 8px; 
+    border-bottom-right-radius: 8px;
+}
+
+/* --- ESTILOS DE LA BARRA DE BÚSQUEDA --- */
+
+.search-bar {
+    /* Espaciado interno y bordes redondeados */
+    padding: 10px 15px; 
+    border: 1px solid #ddd; /* Borde gris muy claro */
+    border-radius: 5px;
+    /* Alinea el icono y el input */
+    display: flex; 
+    align-items: center;
+    /* Margen inferior para separarlo de la tabla */
+    margin-bottom: 25px; 
+}
+
+.search-bar i {
+    /* Color gris oscuro para el icono de búsqueda */
+    color: #999; 
+    /* Margen a la derecha del icono */
+    margin-right: 10px; 
+}
+
+.search-bar input {
+    /* Ocupa todo el espacio restante dentro de la barra */
+    flex-grow: 1; 
+    /* Elimina el borde predeterminado del input */
+    border: none; 
+    /* Elimina el contorno azul al enfocar (focus) */
+    outline: none; 
+    /* Tamaño de fuente */
+    font-size: 14px; 
+}
+
+/* --- ESTILOS DE LA TABLA DE DATOS --- */
+
+.data-table {
+    /* Permite que la tabla ocupe el 100% de su contenedor */
+    width: 100%; 
+    /* Asegura el desplazamiento si la tabla es muy ancha */
+    overflow-x: auto; 
+}
+
+.data-table table {
+    /* La tabla ocupa el 100% del contenedor */
+    width: 100%; 
+    /* Colapsa los bordes de la tabla para un aspecto más limpio */
+    border-collapse: collapse; 
+    /* Espaciado entre celdas (elimina el espacio) */
+    border-spacing: 0; 
+}
+
+/* Estilos para las celdas de la cabecera (títulos) */
+.data-table th {
+    /* Alineación de texto a la izquierda */
+    text-align: left; 
+    /* Color de texto gris oscuro */
+    color: #666; 
+    /* Pone el texto en mayúsculas */
+    text-transform: uppercase; 
+    /* Fuente más pequeña */
+    font-size: 12px; 
+    /* Pone el texto en negrita */
+    font-weight: 600; 
+    /* Espaciado interno */
+    padding: 12px 10px; 
+    /* Borde inferior gris muy sutil para separar la cabecera */
+    border-bottom: 1px solid #eee; 
+}
+
+/* Estilos para todas las celdas de datos */
+.data-table td {
+    /* Espaciado interno para el contenido */
+    padding: 12px 10px; 
+    /* Fuente de tamaño normal */
+    font-size: 14px; 
+    /* Borde inferior gris claro para separar las filas */
+    border-bottom: 1px solid #f9f9f9; 
+    /* Color de texto principal */
+    color: #333; 
+}
+
+/* Estilo al pasar el ratón por encima de una fila (hover) */
+.data-table tbody tr:hover {
+    /* Fondo ligeramente gris al pasar el ratón */
+    background-color: #f7f7f7; 
+}
+
+/* Estilos para los botones de opciones (eliminar, ver, editar) */
+.options-cell {
+    /* Alinea el contenido de la celda a la derecha */
+    text-align: right; 
+    /* Asegura que no haya espacio extra no deseado */
+    white-space: nowrap; 
+}
+
+.options-cell button.btn {
+    /* Ancho y alto fijos para hacerlos cuadrados */
+    width: 32px; 
+    height: 32px;
+    /* Margen entre botones */
+    margin-left: 5px; 
+    /* Borde redondeado */
+    border-radius: 5px; 
+    /* Elimina el borde por defecto */
+    border: none; 
+    /* Color del icono (blanco) */
+    color: white; 
+    /* Cambia el cursor */
+    cursor: pointer; 
+    /* Oculta texto si lo hubiera y centra el icono */
+    display: inline-flex; 
+    justify-content: center;
+    align-items: center;
+    /* Transición suave para el efecto hover */
+    transition: background-color 0.2s; 
+}
+
+/* Colores específicos de los botones */
+.btn-red { 
+    background-color: #e3342f; /* Rojo para Eliminar */
+}
+
+.btn-green {
+    background-color: #38c172; /* Verde para Ver */
+}
+
+.btn-blue {
+    background-color: #3490dc; /* Azul para Editar */
+}
+
+/* Efecto hover más oscuro para los botones */
+.btn-red:hover {
+    background-color: #cc1f1a;
+}
+
+.btn-green:hover {
+    background-color: #2ab27b;
+}
+
+.btn-blue:hover {
+    background-color: #2176bd;
+}
