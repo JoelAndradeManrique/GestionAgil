@@ -1,0 +1,138 @@
+/* =================================================== */
+/* CENTRADO DE LA PANTALLA (BODY) */
+/* =================================================== */
+
+body {
+    background-color: #f4f6f8; /* Fondo gris claro */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    
+    /* Propiedades clave para el centrado vertical y horizontal */
+    display: flex;
+    justify-content: center; /* Centrado horizontal */
+    align-items: center; /* Centrado vertical */
+    min-height: 100vh; /* Asegura que ocupe el 100% de la altura de la vista */
+}
+
+.main-container {
+    /* El contenedor principal puede tener un margen extra si es necesario, pero el flexbox del body hace el centrado */
+    width: 100%;
+}
+
+.course-form-box {
+    /* Estilos del contenedor del formulario */
+    max-width: 600px; /* Limita el ancho del formulario */
+    width: 90%; /* Se adapta a pantallas más pequeñas */
+    background-color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Sombra elegante */
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0 auto; /* Centra el bloque dentro del main-container (por si acaso) */
+}
+
+/* =================================================== */
+/* ESTILOS DEL ENCABEZADO Y CONTENIDO */
+/* =================================================== */
+
+.form-header {
+    background-color: #85E3C7; /* Tono de verde/menta del encabezado */
+    color: #333;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.9rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.form-content {
+    padding: 25px 35px;
+}
+
+/* =================================================== */
+/* ESTILOS DE LOS CAMPOS DE FORMULARIO */
+/* =================================================== */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+/* Estilos de los campos de texto e input */
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 0px solid #e0e0e0;
+    border-radius: 4px;
+    box-sizing: border-box; /* Incluye padding y borde en el ancho total */
+    font-size: 1rem;
+    background-color: #EBF4FF; /* Fondo azul claro del campo de entrada */
+    color: #555;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.form-group textarea {
+    resize: none; /* No Permite redimensionar*/
+}
+
+/* Estilo para los campos de la misma línea (Categoría y Cupos) */
+.form-row {
+    display: flex;
+    gap: 20px; /* Espacio entre los dos campos */
+}
+
+.form-row .form-group {
+    flex: 1; /* Hace que ambos campos ocupen el mismo ancho */
+}
+
+/* =================================================== */
+/* ESTILOS DEL BOTÓN */
+/* =================================================== */
+
+.form-actions {
+    margin-top: 30px;
+    text-align: center; /* Centra el botón si no ocupa todo el ancho */
+}
+
+.btn-agregar {
+    width: 40%;
+    background-color: #306BF2; /* Color azul de Google/Agregar */
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-agregar:hover {
+    background-color: #0642c4;
+}
+
+/* Adaptación para pantallas más pequeñas */
+@media (max-width: 650px) {
+    .form-row {
+        flex-direction: column; /* Apila los campos en línea en pantallas pequeñas */
+        gap: 0;
+    }
+
+    .course-form-box {
+        border-radius: 0; /* Ocupa todo el ancho en móviles */
+    }
+
+    body {
+        padding: 0; /* Elimina el padding extra en móviles */
+    }
+}
