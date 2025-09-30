@@ -44,8 +44,20 @@ class InscripcionController {
     }
     
     // Función para obtener la lista de inscritos (la dejamos como estaba)
+    /**
+     * Obtiene la lista de alumnos inscritos en un curso.
+     */
     public function obtenerInscritos($id_curso) {
-        // ... (código sin cambios)
+        // Validación para asegurar que el ID es válido
+        if (empty($id_curso) || !is_numeric($id_curso)) {
+            return ['estado' => 400, 'mensaje' => 'Se requiere un ID de curso válido.'];
+        }
+
+        // Llama a la función del modelo para buscar en la base de datos
+        $alumnos = $this->modeloInscripcion->getInscritosPorCurso($id_curso);
+        
+        // Devuelve los datos encontrados (la lista puede estar vacía, y eso está bien)
+        return ['estado' => 200, 'datos' => $alumnos];
     }
 
 
@@ -107,6 +119,17 @@ class InscripcionController {
         $pdf->Output('F', $ruta_completa);
 
         return 'vouchers/' . $nombre_archivo;
+    }
+
+   // controllers/InscripcionController.php
+    
+    public function obtenerInscripcionesPorAlumno($id_usuario, $filtros) {
+        if (empty($id_usuario) || !is_numeric($id_usuario)) {
+            return ['estado' => 400, 'mensaje' => 'Se requiere un ID de alumno válido.'];
+        }
+
+        $cursos = $this->modeloInscripcion->getByAlumnoId($id_usuario, $filtros);
+        return ['estado' => 200, 'datos' => $cursos];
     }
 }
 ?>

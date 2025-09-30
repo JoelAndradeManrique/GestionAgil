@@ -103,5 +103,56 @@ class Inscripcion {
         }
         return $alumnos;
     }
+    /**
+     * Obtiene los cursos de un alumno, con filtros opcionales.
+     */
+    public function getByAlumnoId($id_usuario, $filtros = []) {
+        $cursos = [];
+        // La consulta base que une las tablas
+        $query = "SELECT c.*, u.nombre as nombre_instructor 
+                  FROM Inscripciones i
+                  JOIN Cursos c ON i.id_curso = c.id_curso
+                  JOIN Usuarios u ON c.id_instructor = u.id_usuario
+                  WHERE i.id_usuario = ?";
+        
+        $where = [];
+        $params = [$id_usuario];
+        $types = "i";
+
+        // Añadimos los filtros dinámicamente
+        if (!empty($filtros['q'])) {
+            $where[] = "(c.titulo LIKE ? OR c.descripcion LIKE ?)";
+            $types .= "ss";
+            $params[] = "%" . $filtros['q'] . "%";
+            $params[] = "%" . $filtros['q'] . "%";
+        }
+        if (!empty($filtros['categoria'])) {
+            $where[] = "c.id_categoria = ?";
+            $types .= "i";
+            $params[] = $filtros['categoria'];
+        }
+        if (!empty($filtros['modalidad'])) {
+            $where[] = "c.modalidad = ?";
+            $types .= "s";
+            $params[] = $filtros['modalidad'];
+        }
+
+        if (!empty($where)) {
+            $query .= " AND " . implode(" AND ", $where);
+        }
+
+        $stmt = $this->conexion->prepare($query);
+        if (!empty($params)) {
+            $stmt->bind_param($types, ...$params);
+        }
+        
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        while ($fila = $resultado->fetch_assoc()) {
+            $cursos[] = $fila;
+        }
+        return $cursos;
+    }
 }
+
 ?>

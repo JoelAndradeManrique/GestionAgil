@@ -44,12 +44,16 @@ class Curso {
     }
 
     /**
-     * Obtiene un solo curso por su ID.
+     * Obtiene un solo curso por su ID, incluyendo el nombre del instructor.
      * @param int $id El ID del curso a buscar.
      * @return array|null Los datos del curso o null si no se encuentra.
      */
     public function getById($id) {
-        $query = "SELECT * FROM Cursos WHERE id_curso = ?";
+        $query = "SELECT c.*, u.nombre as nombre_instructor 
+                  FROM Cursos c
+                  JOIN Usuarios u ON c.id_instructor = u.id_usuario
+                  WHERE c.id_curso = ?";
+        
         $stmt = $this->conexion->prepare($query);
         $stmt->bind_param("i", $id);
         $stmt->execute();

@@ -1,138 +1,156 @@
-*{
+/* ==========================================================================
+   ESTILOS GLOBALES Y RESETEO
+   ========================================================================== */
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-body{
-  font-size: 16px;
-  line-height: 1;
-  color: #333;
-  background-color: #f4f7f6;
-}
-
-
-
-.centrar{
-  text-align: center;
-}
-.ancho{
-  max-width: 100%;
-  height: 150px;
-  margin: auto;
-  padding: 10px;
-  /* border: 1px solid red; */
-}
-.contenedor1{
-  max-width: 100%;
-  height: 80px;
-  background-color: #2563eb;
-}
-.contenedor1 p{
+body {
   font-family: 'Roboto', sans-serif;
-  font-size: 19px;
-  color: white;
-  padding: 25px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  background-color: #f8f9fa; /* Fondo gris claro para todas las páginas */
 }
 
-.contenedor2{
+a {
+  color: #2563eb;
+  font-weight: 700;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   ESTILOS PARA LOS FORMULARIOS (Login, Registro, Crear Curso, etc.)
+   ========================================================================== */
+.form-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 80px); /* Ocupa el resto de la pantalla */
-  padding: 2rem; /* Espacio por si la pantalla es muy pequeña */
-
-  background-image: url('imagenes/banner_principal.png');
-  background-size: 85%;
-  background-repeat: no-repeat;
+  min-height: 100vh;
+  padding: 2rem;
+  background-image: url('../imagenes/banner_principal.png'); /* Asegúrate que la ruta sea correcta */
+  background-size: cover;
   background-position: center;
-  width: 100%;
-  height: 100%;
 }
-.contenedor3 {
+
+.form-box {
   width: 100%;
-  max-width: 480px; /* Ancho máximo para que no se estire demasiado en pantallas grandes */
-  background-color: rgba(255, 255, 255, 0.9); /* Un poco más opaco para leer mejor */
-  border-radius: 12px; /* Bordes redondeados */
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-  padding: 2.5rem; /* Espaciado interno generoso */
+  max-width: 500px;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
-.contenedor3 h1 {
-  font-size: 2.8rem; /* Tamaño más controlado */
+.form-box h1 {
+  font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  color: #1e3a8a; /* Azul más oscuro */
-  line-height: 1.2;
+  color: #1e3a8a;
 }
 
-.contenedor3 p {
-  font-size: 1.1rem; /* Tamaño más controlado */
-  margin-top: 0;
+.form-box p {
+  font-size: 1rem;
   margin-bottom: 2rem;
   color: #555;
 }
 
-.contenedor3 p a {
-    color: #2563eb;
-    font-weight: bold;
-}
 .form_grupo {
-  text-align: left; /* Alineamos etiquetas a la izquierda */
-  margin-bottom: 1.5rem; /* Espacio uniforme entre grupos */
+  text-align: left;
+  margin-bottom: 1.5rem;
 }
 
 .form_grupo label {
   display: block;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
 }
 
-/* Estilo unificado para inputs y la nueva lista desplegable */
-.contenedor3 input[type="text"],
-.contenedor3 input[type="email"],
-.contenedor3 input[type="password"],
-.contenedor3 select {
+.form_grupo input[type="text"],
+.form_grupo input[type="email"],
+.form_grupo input[type="password"],
+.form_grupo input[type="date"],
+.form_grupo input[type="number"],
+.form_grupo select,
+.form_grupo textarea {
   width: 100%;
-  height: auto; /* Altura automática basada en el padding */
-  padding: 12px 15px; /* Espaciado interno */
+  padding: 0.8rem 1rem;
   font-size: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
   background-color: #f9fafb;
-  border: 1px solid #d1d5db; /* Borde más sutil */
-  border-radius: 8px; /* Bordes más redondeados */
-  transition: all 0.3s ease; /* Transición suave */
+  font-family: 'Roboto', sans-serif;
 }
 
-/* Efecto al hacer clic en un campo */
-.contenedor3 input:focus,
-.contenedor3 select:focus {
-  outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
-}
-
-/* --- BOTÓN DE ENVÍO --- */
-.btn {
-  margin-top: 2rem; /* Espacio extra antes del botón */
-}
-
-.btn input {
-  width: 100%; /* El botón ocupa todo el ancho */
-  padding: 15px; /* Más cómodo para hacer clic */
-  font-weight: bold;
+.btn input[type="submit"] {
+  width: 100%;
+  padding: 1rem;
   font-size: 1.1rem;
-  color: white;
+  font-weight: 700;
+  color: #fff;
   background-color: #2563eb;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  margin-top: 1rem;
+  transition: background-color 0.3s;
 }
 
-.btn input:hover {
-  background-color: #1e40af; /* Azul más oscuro al pasar el mouse */
-  transform: translateY(-3px); /* Pequeño efecto de elevación */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.btn input[type="submit"]:hover {
+  background-color: #1e40af;
 }
+
+/* Clases para mensajes de error/éxito */
+#mensaje { margin-top: 15px; padding: 10px; border-radius: 8px; font-weight: bold; display: none; text-align: center; }
+#mensaje.exito { color: #155724; background-color: #d4edda; border: 1px solid #c3e6cb; display: block; }
+#mensaje.error { color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; display: block; }
+
+
+/* ==========================================================================
+   ESTILOS PARA EL DASHBOARD Y VISTAS DE CATÁLOGO
+   ========================================================================== */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.search-bar { flex-grow: 1; margin: 0 2rem; }
+.search-bar input { width: 100%; max-width: 400px; padding: 0.5rem 1rem; border: 1px solid #ccc; border-radius: 20px; }
+.nav-links { margin-right: 2rem; }
+.nav-links a { margin-left: 1.5rem; text-decoration: none; color: #333; font-weight: 700; }
+.user-profile { display: flex; align-items: center; }
+.user-initials { width: 40px; height: 40px; border-radius: 50%; background-color: #2563eb; color: white; display: flex; justify-content: center; align-items: center; font-weight: 700; margin-left: 1rem; cursor: pointer; }
+
+.cursos-container { padding: 2rem; max-width: 1200px; margin: auto; }
+.cursos-container h1 { margin-bottom: 2rem; text-align: center; color: #1e3a8a;}
+
+.cursos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.curso-card {
+    background-color: white; border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    overflow: hidden; text-align: center; padding: 1.5rem;
+    display: flex; flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.curso-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+.curso-card .card-icon, .curso-card .card-img { height: 80px; display: flex; justify-content: center; align-items: center; font-size: 3rem; color: #4a5568; margin-bottom: 1rem;}
+.curso-card .card-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+.curso-card .card-details { color: #666; margin-bottom: 1.5rem; flex-grow: 1; }
+.curso-card .card-button { display: block; padding: 0.75rem; background-color: #2563eb; color: white; text-decoration: none; border-radius: 8px; font-weight: 700; }
