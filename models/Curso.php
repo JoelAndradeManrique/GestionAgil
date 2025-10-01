@@ -170,6 +170,21 @@ class Curso {
         return $cursos;
     }
 
+    /**
+     * Busca un curso por título e ID de instructor para evitar duplicados.
+     * @param string $titulo El título del curso.
+     * @param int $id_instructor El ID del instructor.
+     * @return array|null Los datos del curso si se encuentra, o null.
+     */
+    public function findByTitleAndInstructor($titulo, $id_instructor) {
+        $query = "SELECT id_curso FROM Cursos WHERE titulo = ? AND id_instructor = ?";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bind_param("si", $titulo, $id_instructor);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        return $resultado->fetch_assoc();
+    }
+
      
 
 }

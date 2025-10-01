@@ -129,7 +129,7 @@ $(document).ready(function() {
     $("#user-name").text(datosUsuario.nombre);
     const iniciales = datosUsuario.nombre.split(' ').map(n => n[0]).join('');
     $("#user-initials").text(iniciales);
-    if(datosUsuario.rol === 'instructor' || datosUsuario.rol === 'admin') { $(".nav-links").append('<a href="#">MIS CURSOS</a>'); } else { $(".nav-links").append('<a href="mis_inscripciones.php">MIS INSCRIPCIONES</a>'); }
+    if(datosUsuario.rol === 'instructor' || datosUsuario.rol === 'admin') { $(".nav-links").append('<a href="mis_cursos.php">MIS CURSOS</a>'); } else { $(".nav-links").append('<a href="mis_inscripciones.php">MIS INSCRIPCIONES</a>'); }
     $("#user-initials").on("click", function() { if (confirm("¿Deseas cerrar la sesión?")) { localStorage.removeItem('usuario'); window.location.href = 'inicio_sesion.php'; } });
     $("#searchForm").on("submit", function(event) { event.preventDefault(); const t = $("#searchInput").val(); if (t.trim() !== '') { window.location.href = `dashboard.php?q=${t}`; } });
 

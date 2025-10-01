@@ -110,7 +110,7 @@ $(document).ready(function() {
 
     if (!idCurso) {
         alert("No se especificó un curso para editar.");
-        window.location.href = 'mis-cursos.php';
+        window.location.href = 'mis_cursos.php';
         return;
     }
 

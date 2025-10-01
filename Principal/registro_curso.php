@@ -181,77 +181,92 @@
         </div>
     </main>
     
-    <script>
-    $(document).ready(function() {
-        // --- LÓGICA DE LA CABECERA (la de siempre) ---
-        const datosUsuario = JSON.parse(localStorage.getItem('usuario'));
-        if (!datosUsuario || (datosUsuario.rol !== 'instructor' && datosUsuario.rol !== 'admin')) {
-            alert("Acceso denegado. Solo los instructores pueden crear cursos.");
-            window.location.href = 'dashboard.php';
+   <script>
+$(document).ready(function() {
+    // 1. AUTORIZACIÓN Y LÓGICA DE CABECERA
+    const datosUsuario = JSON.parse(localStorage.getItem('usuario'));
+    if (!datosUsuario || (datosUsuario.rol !== 'instructor' && datosUsuario.rol !== 'admin')) {
+        alert("Acceso denegado. Solo los instructores pueden crear cursos.");
+        window.location.href = 'dashboard.php';
+        return;
+    }
+    $("#user-name").text(datosUsuario.nombre);
+    const iniciales = datosUsuario.nombre.split(' ').map(n => n[0]).join('');
+    $("#user-initials").text(iniciales);
+    const paginaActual = window.location.pathname.split('/').pop();
+    let estiloInscripciones = (paginaActual === 'mis_inscripciones.php') ? 'style="color: #2563eb;"' : '';
+    let estiloCursos = (paginaActual === 'mis_cursos.php') ? 'style="color: #2563eb;"' : '';
+    $(".nav-links").append(`<a href="mis_inscripciones.php" ${estiloInscripciones}>MIS INSCRIPCIONES</a>`);
+    if (datosUsuario.rol === 'instructor' || datosUsuario.rol === 'admin') {
+        $(".nav-links").append(`<a href="mis_cursos.php" ${estiloCursos}>MIS CURSOS</a>`);
+        $(".nav-links").append('<a href="crear-curso.php" style="color: #2563eb;">CREAR CURSO</a>');
+    }
+    $("#user-initials").on("click", function() { if (confirm("¿Deseas cerrar la sesión?")) { localStorage.removeItem('usuario'); window.location.href = 'inicio_sesion.php'; }});
+    $("#searchFormGlobal").on("submit", function(event) { event.preventDefault(); const t = $("#searchInputGlobal").val(); if (t.trim() !== '') { window.location.href = `dashboard.php?q=${t}`; }});
+
+
+    // 2. CARGAR CATEGORÍAS EN EL SELECT (LA PARTE QUE FALTABA)
+    $.ajax({
+        url: '../api/obtenerCategorias.php',
+        method: 'GET',
+        success: function(categorias) {
+            const selectCategoria = $("#categoria");
+            selectCategoria.append('<option value="">-- Selecciona una categoría --</option>');
+            categorias.forEach(cat => {
+                selectCategoria.append(`<option value="${cat.id_categoria}">${cat.nombre}</option>`);
+            });
+        }
+    });
+
+    // 3. LÓGICA PARA ENVIAR EL FORMULARIO
+    $("#crearCursoForm").on("submit", function(event) {
+        event.preventDefault();
+        $("#mensaje").empty().removeClass("error exito");
+
+        let datosCurso = {
+            titulo: $("#titulo").val(),
+            descripcion: $("#descripcion").val(),
+            fecha_inicio: $("#fecha_inicio").val(),
+            fecha_fin: $("#fecha_fin").val(),
+            cupo_disponible: $("#cupo").val(),
+            precio: $("#precio").val(),
+            estado: $("#estado").val(),
+            modalidad: $("#modalidad").val(),
+            id_categoria: $("#categoria").val(),
+            id_instructor: datosUsuario.id_usuario 
+        };
+
+        if (!datosCurso.titulo || !datosCurso.id_categoria || !datosCurso.fecha_inicio || !datosCurso.fecha_fin) {
+             $("#mensaje").text("Por favor, completa todos los campos obligatorios.").addClass("error");
+             return;
+        }
+
+        const hoy = new Date().toISOString().split('T')[0];
+        if (datosCurso.fecha_inicio < hoy) {
+            $("#mensaje").text("La fecha de inicio no puede ser anterior a la fecha actual.").addClass("error");
             return;
         }
-        $("#user-name").text(datosUsuario.nombre);
-        const iniciales = datosUsuario.nombre.split(' ').map(n => n[0]).join('');
-        $("#user-initials").text(iniciales);
-        const paginaActual = window.location.pathname.split('/').pop();
-        let estiloInscripciones = (paginaActual === 'mis_inscripciones.php') ? 'style="color: #2563eb;"' : '';
-        let estiloCursos = (paginaActual === 'mis_cursos.php') ? 'style="color: #2563eb;"' : '';
-        $(".nav-links").append(`<a href="mis_inscripciones.php" ${estiloInscripciones}>MIS INSCRIPCIONES</a>`);
-        if (datosUsuario.rol === 'instructor' || datosUsuario.rol === 'admin') {
-            $(".nav-links").append(`<a href="mis_cursos.php" ${estiloCursos}>MIS CURSOS</a>`);
-            $(".nav-links").append('<a href="crear-curso.php" style="color: #2563eb;">CREAR CURSO</a>');
+        if (datosCurso.fecha_fin < datosCurso.fecha_inicio) {
+            $("#mensaje").text("La fecha de fin no puede ser anterior a la fecha de inicio.").addClass("error");
+            return;
         }
-        $("#user-initials").on("click", function() { if (confirm("¿Deseas cerrar la sesión?")) { localStorage.removeItem('usuario'); window.location.href = 'inicio_sesion.php'; }});
-        $("#searchFormGlobal").on("submit", function(event) { event.preventDefault(); const t = $("#searchInputGlobal").val(); if (t.trim() !== '') { window.location.href = `dashboard.php?q=${t}`; }});
 
-        // --- LÓGICA DE LA PÁGINA "CREAR CURSO" ---
         $.ajax({
-            url: '../api/obtenerCategorias.php',
-            method: 'GET',
-            success: function(categorias) {
-                const selectCategoria = $("#categoria");
-                selectCategoria.append('<option value="">-- Selecciona una categoría --</option>');
-                categorias.forEach(cat => {
-                    selectCategoria.append(`<option value="${cat.id_categoria}">${cat.nombre}</option>`);
-                });
+            url: '../api/crearCurso.php',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(datosCurso),
+            success: function(response) {
+                $("#mensaje").text(response.mensaje + " Serás redirigido a 'Mis Cursos'.").addClass("exito");
+                setTimeout(function() { window.location.href = 'mis_cursos.php'; }, 2000);
+            },
+            error: function(jqXHR) {
+                let errorMsg = jqXHR.responseJSON ? jqXHR.responseJSON.mensaje : "Error desconocido.";
+                $("#mensaje").text(errorMsg).addClass("error");
             }
-        });
-
-        $("#crearCursoForm").on("submit", function(event) {
-            event.preventDefault();
-            $("#mensaje").empty().removeClass("error exito");
-            let datosCurso = {
-                titulo: $("#titulo").val(),
-                descripcion: $("#descripcion").val(),
-                fecha_inicio: $("#fecha_inicio").val(),
-                fecha_fin: $("#fecha_fin").val(),
-                cupo_disponible: $("#cupo").val(),
-                precio: $("#precio").val(),
-                estado: $("#estado").val(),
-                modalidad: $("#modalidad").val(),
-                id_categoria: $("#categoria").val(),
-                id_instructor: datosUsuario.id_usuario 
-            };
-            if (!datosCurso.titulo || !datosCurso.id_categoria) {
-                 $("#mensaje").text("Por favor, completa al menos el título y la categoría.").addClass("error");
-                 return;
-            }
-            $.ajax({
-                url: '../api/crearCurso.php',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(datosCurso),
-                success: function(response) {
-                    $("#mensaje").text(response.mensaje + " Serás redirigido a 'Mis Cursos'.").addClass("exito");
-                    setTimeout(function() { window.location.href = 'mis_cursos.php'; }, 2000);
-                },
-                error: function(jqXHR) {
-                    let errorMsg = jqXHR.responseJSON ? jqXHR.responseJSON.mensaje : "Error desconocido.";
-                    $("#mensaje").text(errorMsg).addClass("error");
-                }
-            });
         });
     });
-    </script>
+});
+</script>
 </body>
 </html>

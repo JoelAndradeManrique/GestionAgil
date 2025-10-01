@@ -16,7 +16,7 @@ class CursoController {
      * Procesa la creación de un nuevo curso.
      */
     public function crearCurso($datos) {
-        // Validación de campos obligatorios
+        // Validación de campos obligatorios (sin cambios)
         $campos_requeridos = ['titulo', 'descripcion', 'fecha_inicio', 'fecha_fin', 'cupo_disponible', 'precio', 'estado', 'modalidad', 'id_instructor', 'id_categoria'];
         foreach ($campos_requeridos as $campo) {
             if (!isset($datos->$campo)) {
@@ -24,7 +24,15 @@ class CursoController {
             }
         }
 
-        // Llamamos al modelo para que intente crear el curso
+        // ✅ AÑADIMOS LA NUEVA VALIDACIÓN AQUÍ
+        // Verificamos si ya existe un curso con ese título para ese instructor
+        if ($this->modeloCurso->findByTitleAndInstructor($datos->titulo, $datos->id_instructor)) {
+            // Si se encuentra, devolvemos un error de "Conflicto"
+            return ['estado' => 409, 'mensaje' => 'Ya has creado un curso con este mismo título.'];
+        }
+        // ✅ FIN DE LA VALIDACIÓN
+
+        // Si no existe, continuamos con la creación (sin cambios)
         if ($this->modeloCurso->create($datos)) {
             return ['estado' => 201, 'mensaje' => 'Curso creado con éxito.'];
         } else {
