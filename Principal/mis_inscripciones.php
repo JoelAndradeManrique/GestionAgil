@@ -88,7 +88,7 @@ $(document).ready(function() {
     const iniciales = datosUsuario.nombre.split(' ').map(n => n[0]).join('');
     $("#user-initials").text(iniciales);
     if(datosUsuario.rol === 'alumno') {
-        $(".nav-links").append('<a href="mis-inscripciones.php" style="color: #2563eb;">MIS INSCRIPCIONES</a>');
+        $(".nav-links").append('<a href="mis_inscripciones.php" style="color: #2563eb;">MIS INSCRIPCIONES</a>');
     }
     $("#user-initials").on("click", function() { if (confirm("¿Deseas cerrar la sesión?")) { localStorage.removeItem('usuario'); window.location.href = 'inicio_sesion.php'; }});
     

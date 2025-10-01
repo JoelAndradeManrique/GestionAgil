@@ -4,40 +4,45 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>INICIAR SESION</title>
-  <link rel="stylesheet" href="../Principal/estilos.css">
+  <link rel="stylesheet" href="../principal/estilos.css">
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <style>
-    #mensaje { margin-top: 15px; padding: 10px; border-radius: 5px; font-weight: bold; display: none; }
-    #mensaje.exito { color: #155724; background-color: #d4edda; border: 1px solid #c3e6cb; display: block; }
-    #mensaje.error { color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; display: block; }
+    /* Estilos para el enlace de olvido de contraseña */
+    .enlace-olvido {
+      display: block;
+      text-align: right;
+      margin-top: -1rem; /* Sube un poco el enlace */
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
-  <div class="contenedor2">
-    <div class="contenedor3">
-      <h1>HOLA</h1>
-      <p>Inicia sesión para continuar</p>
-      <div id="mensaje"></div>
-      <form id="loginForm">
-        <div class="form_grupo">
-          <label for="email">CORREO ELECTRÓNICO</label><br>
-          <input type="email" id="email" name="email" required>
-        </div>
-        <div class="form_grupo">
-          <label for="contrasena">CONTRASEÑA</label><br>
-          <input type="password" id="contrasena" name="contrasena" required>
-          
-          <a href="recuperar_contrasena.php" class="enlace-olvido">¿Olvidaste tu contraseña?</a>
+    <main class="form-container">
+        <div class="form-box">
+            <h1>HOLA</h1>
+            <p>Inicia sesión para continuar</p>
+            <div id="mensaje"></div>
 
+            <form id="loginForm">
+                <div class="form_grupo">
+                    <label for="email">CORREO ELECTRÓNICO</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form_grupo">
+                    <label for="contrasena">CONTRASEÑA</label>
+                    <input type="password" id="contrasena" name="contrasena" required>
+                </div>
+
+                <a href="recuperar_contrasena.php" class="enlace-olvido">¿Olvidaste tu contraseña?</a>
+                
+                <div class="btn">
+                    <input type="submit" value="Ingresar">
+                </div>
+            </form>
+            <p style="font-size: 1rem; margin-top: 1.5rem;">¿No tienes cuenta? <a href="login.php">Regístrate aquí</a>.</p>
         </div>
-        
-        <div class="btn">
-          <input type="submit" value="Ingresar">
-        </div>
-      </form>
-      <p style="margin-top: 15px;">¿No tienes cuenta? <a href="login.php">Regístrate aquí</a>.</p>
-    </div>
-  </div>
+    </main>
 
   <script>
     $(document).ready(function() {
@@ -51,7 +56,7 @@
           return;
         }
         $.ajax({
-          url: '../api/login.php', // Llama a la API de login
+          url: '../api/login.php',
           method: 'POST',
           contentType: 'application/json',
           data: JSON.stringify({ email: email, contrasena: contrasena }),

@@ -33,7 +33,7 @@ a:hover {
   align-items: center;
   min-height: 100vh;
   padding: 2rem;
-  background-image: url('../imagenes/banner_principal.png'); /* Asegúrate que la ruta sea correcta */
+  background-image: url('../Principal/imagenes/banner_principal.png'); /* Ruta corregida */
   background-size: cover;
   background-position: center;
 }

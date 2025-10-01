@@ -77,11 +77,11 @@ $(document).ready(function() {
     $("#user-initials").text(iniciales);
     
     const paginaActual = window.location.pathname.split('/').pop();
-    let estiloInscripciones = (paginaActual === 'mis-inscripciones.php') ? 'style="color: #2563eb;"' : '';
-    let estiloCursos = (paginaActual === 'mis-cursos.php') ? 'style="color: #2563eb;"' : '';
-    $(".nav-links").append(`<a href="mis-inscripciones.php" ${estiloInscripciones}>MIS INSCRIPCIONES</a>`);
+    let estiloInscripciones = (paginaActual === 'mis_inscripciones.php') ? 'style="color: #2563eb;"' : '';
+    let estiloCursos = (paginaActual === 'mis_cursos.php') ? 'style="color: #2563eb;"' : '';
+    $(".nav-links").append(`<a href="mis_inscripciones.php" ${estiloInscripciones}>MIS INSCRIPCIONES</a>`);
     if (datosUsuario.rol === 'instructor' || datosUsuario.rol === 'admin') {
-        $(".nav-links").append(`<a href="mis-cursos.php" ${estiloCursos}>MIS CURSOS</a>`);
+        $(".nav-links").append(`<a href="mis_cursos.php" ${estiloCursos}>MIS CURSOS</a>`);
     }
 
     $("#user-initials").on("click", function() { if (confirm("¿Deseas cerrar la sesión?")) { localStorage.removeItem('usuario'); window.location.href = 'inicio_sesion.php'; }});

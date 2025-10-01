@@ -101,7 +101,7 @@ $(document).ready(function() {
     
     $(".nav-links").append(`<a href="mis_inscripciones.php" ${estiloInscripciones}>MIS INSCRIPCIONES</a>`);
     $(".nav-links").append(`<a href="mis_cursos.php" ${estiloCursos}>MIS CURSOS</a>`);
-    $(".nav-links").append('<a href="crear-curso.php">CREAR CURSO</a>');
+    $(".nav-links").append('<a href="registro_curso.php">CREAR CURSO</a>');
 
     $("#user-initials").on("click", function() { if (confirm("¿Deseas cerrar la sesión?")) { localStorage.removeItem('usuario'); window.location.href = 'inicio_sesion.php'; }});
     $("#searchFormGlobal").on("submit", function(event) { event.preventDefault(); const t = $("#searchInputGlobal").val(); if (t.trim() !== '') { window.location.href = `dashboard.php?q=${t}`; }});
@@ -180,7 +180,7 @@ $(document).ready(function() {
                 data: JSON.stringify({ id_curso: idCurso }),
                 success: function(response) {
                     alert(response.mensaje);
-                    window.location.href = 'mis-cursos.php';
+                    window.location.href = 'mis_cursos.php';
                 },
                 error: function(jqXHR) {
                     alert(jqXHR.responseJSON ? jqXHR.responseJSON.mensaje : "Error desconocido.");

@@ -71,44 +71,39 @@ class userController {
 
     
 
-    /**
- * Procesa la solicitud de recuperación de contraseña.
- */
-public function solicitarRecuperacion($datos) {
-    if (!isset($datos->email)) {
-        return ['estado' => 400, 'mensaje' => 'Se requiere el correo electrónico.'];
-    }
+  public function solicitarRecuperacion($datos) {
+        if (!isset($datos->email)) {
+            return ['estado' => 400, 'mensaje' => 'Se requiere el correo electrónico.'];
+        }
 
-    // Verificar si el usuario existe
-    $usuario = $this->modeloUsuario->findByEmail($datos->email);
-    if (!$usuario) {
-        // Por seguridad, damos una respuesta genérica aunque el email no exista
-        return ['estado' => 200, 'mensaje' => 'Si tu correo está en nuestro sistema, recibirás un enlace para recuperar tu contraseña.'];
-    }
+        $usuario = $this->modeloUsuario->findByEmail($datos->email);
 
-    // Generar un token seguro y único
-    $token = bin2hex(random_bytes(32));
+        // Si el usuario no existe, devolvemos el error que querías
+        if (!$usuario) {
+            return ['estado' => 404, 'mensaje' => 'El correo no está registrado.'];
+        }
 
-    // Establecer una fecha de expiración (ej. 1 hora desde ahora)
-    $expiracion = date('Y-m-d H:i:s', time() + 3600);
+        // Si el usuario sí existe, generamos el token
+        $token = bin2hex(random_bytes(32));
+        $expiracion = date('Y-m-d H:i:s', time() + 3600); // 1 hora de expiración
 
-    // Guardar el token en la base de datos
-    if ($this->modeloUsuario->guardarResetToken($datos->email, $token, $expiracion)) {
-        // --- SIMULACIÓN DE ENVÍO DE CORREO ---
-        // En una app real, aquí iría el código para enviar el email.
-        // Por ahora, devolvemos el token en la respuesta para poder probar.
-        $linkRecuperacion = "http://localhost/GestionAgil/Principal/resetear_contrasena.php?token=" . $token;
-
-        return [
-            'estado' => 200, 
-            'mensaje' => 'Si tu correo está en nuestro sistema, recibirás un enlace para recuperar tu contraseña.',
-            'simulacion_email' => 'Correo enviado a ' . $datos->email . ' con el link: ' . $linkRecuperacion
+        if ($this->modeloUsuario->guardarResetToken($datos->email, $token, $expiracion)) {
+            
+            // ✅ NOS ASEGURAMOS DE QUE ESTA PARTE ESTÉ ACTIVA
+            // Construimos el enlace para la simulación
+            $linkRecuperacion = "http://localhost/GestionAgil/Principal/resetear_contrasena.php?token=" . $token;
+            
+            // Devolvemos la respuesta incluyendo la simulación del email
+            return [
+                'estado' => 200, 
+                'mensaje' => 'Enlace de recuperación generado. En una app real, se enviaría por correo.',
+                'simulacion_email' => 'Enlace simulado: ' . $linkRecuperacion
             ];
+
         } else {
-            return ['estado' => 500, 'mensaje' => 'Error al procesar la solicitud.'];
+            return ['estado' => 500, 'mensaje' => 'Error al procesar la solicitud en la base de datos.'];
         }
     }
-
 
 
         /**
