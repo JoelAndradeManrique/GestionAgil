@@ -80,19 +80,37 @@
 
 <script>
 $(document).ready(function() {
+    // --- LÓGICA DE LA CABECERA (VERSIÓN FINAL Y REUTILIZABLE) ---
     const datosUsuario = JSON.parse(localStorage.getItem('usuario'));
-    if (!datosUsuario) { window.location.href = 'inicio_sesion.php'; return; }
+    if (!datosUsuario) {
+        window.location.href = 'inicio_sesion.php';
+        return;
+    }
 
-    // --- LÓGICA DE LA CABECERA ---
     $("#user-name").text(datosUsuario.nombre);
     const iniciales = datosUsuario.nombre.split(' ').map(n => n[0]).join('');
     $("#user-initials").text(iniciales);
-    if(datosUsuario.rol === 'alumno') {
-        $(".nav-links").append('<a href="mis_inscripciones.php" style="color: #2563eb;">MIS INSCRIPCIONES</a>');
-    }
-    $("#user-initials").on("click", function() { if (confirm("¿Deseas cerrar la sesión?")) { localStorage.removeItem('usuario'); window.location.href = 'inicio_sesion.php'; }});
+
+    const paginaActual = window.location.pathname.split('/').pop();
     
-    // ✅ Lógica para la barra de búsqueda GLOBAL (en la cabecera)
+    // Lógica para mostrar enlaces de navegación según el rol
+    let estiloInscripciones = (paginaActual === 'mis_inscripciones.php') ? 'style="color: #2563eb;"' : '';
+    let estiloCursos = (paginaActual === 'mis_cursos.php') ? 'style="color: #2563eb;"' : '';
+
+    $(".nav-links").append(`<a href="mis_inscripciones.php" ${estiloInscripciones}>MIS INSCRIPCIONES</a>`);
+
+    if (datosUsuario.rol === 'instructor' || datosUsuario.rol === 'admin') {
+        $(".nav-links").append(`<a href="mis_cursos.php" ${estiloCursos}>MIS CURSOS</a>`);
+        // Opcional: Si quieres que el instructor vea el enlace a "Crear Curso"
+        // $(".nav-links").append('<a href="crear-curso.php">CREAR CURSO</a>');
+    }
+
+    $("#user-initials").on("click", function() {
+        if (confirm("¿Deseas cerrar la sesión?")) {
+            localStorage.removeItem('usuario');
+            window.location.href = 'inicio_sesion.php';
+        }
+    });
     $("#searchFormGlobal").on("submit", function(event) {
         event.preventDefault();
         const termino = $("#searchInputGlobal").val();
@@ -100,7 +118,6 @@ $(document).ready(function() {
             window.location.href = `dashboard.php?q=${termino}`;
         }
     });
-
     // --- LÓGICA DE LA PÁGINA "MIS INSCRIPCIONES" ---
     
     // Llenar el filtro de categorías

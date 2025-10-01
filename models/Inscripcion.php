@@ -12,25 +12,36 @@ class Inscripcion {
      * Proceso completo de inscripción. Devuelve datos para el voucher en caso de éxito.
      * @return array|string Retorna un array con datos del pago en éxito, o un string con el error si falla.
      */
+    /**
+     * Proceso completo de inscripción usando una transacción.
+     * Devuelve datos para el voucher en caso de éxito, o un string con el error si falla.
+     */
     public function crear($id_curso, $id_usuario) {
+        // --- Iniciamos la transacción para asegurar que todo o nada se ejecute ---
         $this->conexion->begin_transaction();
+
         try {
-            // --- (Las validaciones de cupo, etc. no cambian) ---
+            // 1. Verificar si el usuario ya está inscrito
             $stmt_check = $this->conexion->prepare("SELECT id_inscripcion FROM Inscripciones WHERE id_curso = ? AND id_usuario = ?");
             $stmt_check->bind_param("ii", $id_curso, $id_usuario);
             $stmt_check->execute();
             $stmt_check->store_result();
-            if ($stmt_check->num_rows > 0) throw new Exception("El usuario ya está inscrito en este curso.");
+            if ($stmt_check->num_rows > 0) {
+                throw new Exception("El usuario ya está inscrito en este curso.");
+            }
             $stmt_check->close();
 
+            // 2. Verificar si hay cupos disponibles (y bloquear la fila para seguridad)
             $stmt_cupo = $this->conexion->prepare("SELECT cupo_disponible FROM Cursos WHERE id_curso = ? FOR UPDATE");
             $stmt_cupo->bind_param("i", $id_curso);
             $stmt_cupo->execute();
             $cupo_result = $stmt_cupo->get_result()->fetch_assoc();
-            if ($cupo_result['cupo_disponible'] <= 0) throw new Exception("No hay cupos disponibles para este curso.");
+            if ($cupo_result['cupo_disponible'] <= 0) {
+                throw new Exception("No hay cupos disponibles para este curso.");
+            }
             $stmt_cupo->close();
 
-            // --- (La inserción en Inscripciones y Pagos no cambia) ---
+            // 3. Insertar la nueva inscripción
             $fecha_actual = date('Y-m-d H:i:s');
             $stmt_ins = $this->conexion->prepare("INSERT INTO Inscripciones (id_curso, id_usuario, fecha_inscripcion) VALUES (?, ?, ?)");
             $stmt_ins->bind_param("iis", $id_curso, $id_usuario, $fecha_actual);
@@ -38,19 +49,25 @@ class Inscripcion {
             $id_inscripcion_nueva = $this->conexion->insert_id;
             $stmt_ins->close();
 
+            // 4. Insertar el pago simulado
             $stmt_pago = $this->conexion->prepare("INSERT INTO Pagos (id_inscripcion, monto, fecha_pago, estado_pago) VALUES (?, (SELECT precio FROM Cursos WHERE id_curso = ?), ?, 'completado')");
             $stmt_pago->bind_param("iis", $id_inscripcion_nueva, $id_curso, $fecha_actual);
             $stmt_pago->execute();
             $id_pago_nuevo = $this->conexion->insert_id;
             $stmt_pago->close();
 
-            $stmt_update = $this->conexion->prepare("UPDATE Cursos SET cupo_disponible = cupo_disponible - 1 WHERE id_curso = ?");
+            // 5. Actualizar el cupo y el estado del curso si se acaban los lugares
+            $query_update = "UPDATE Cursos SET 
+                                cupo_disponible = cupo_disponible - 1,
+                                estado = IF(cupo_disponible = 1, 'cerrado', estado)
+                             WHERE id_curso = ?";
+            
+            $stmt_update = $this->conexion->prepare($query_update);
             $stmt_update->bind_param("i", $id_curso);
             $stmt_update->execute();
             $stmt_update->close();
 
-            // --- ✅ AQUÍ ESTÁ LA CONSULTA MEJORADA ---
-            // Ahora también pide el nombre del instructor (u.nombre) y las fechas del curso (c.fecha_inicio, c.fecha_fin)
+            // 6. Obtener los datos necesarios para el voucher
             $query_datos = "SELECT c.titulo, c.fecha_inicio, c.fecha_fin, p.monto, u.nombre AS nombre_instructor
                             FROM Cursos c
                             JOIN Usuarios u ON c.id_instructor = u.id_usuario
@@ -63,23 +80,25 @@ class Inscripcion {
             $datos_voucher = $stmt_datos->get_result()->fetch_assoc();
             $stmt_datos->close();
 
+            // --- Si todo salió bien, confirmamos los cambios ---
             $this->conexion->commit();
             
-            // DEVOLVEMOS TODOS LOS DATOS NUEVOS
+            // Devolvemos los datos para el voucher
             return [
                 'id_inscripcion' => $id_inscripcion_nueva,
                 'id_pago' => $id_pago_nuevo,
                 'fecha_pago' => $fecha_actual,
                 'titulo_curso' => $datos_voucher['titulo'],
                 'monto' => $datos_voucher['monto'],
-                'nombre_instructor' => $datos_voucher['nombre_instructor'], // Nuevo
-                'fecha_inicio' => $datos_voucher['fecha_inicio'],       // Nuevo
-                'fecha_fin' => $datos_voucher['fecha_fin']            // Nuevo
+                'nombre_instructor' => $datos_voucher['nombre_instructor'],
+                'fecha_inicio' => $datos_voucher['fecha_inicio'],
+                'fecha_fin' => $datos_voucher['fecha_fin']
             ];
 
         } catch (Exception $e) {
+            // --- Si algo falló, deshacemos todos los cambios ---
             $this->conexion->rollback();
-            return $e->getMessage();
+            return $e->getMessage(); // Devolvemos el mensaje de error específico
         }
     }
     /**
