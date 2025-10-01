@@ -114,7 +114,7 @@
 
 <script>
 $(document).ready(function() {
-    // --- LÓGICA DE LA PÁGINA ---
+    // --- 1. LÓGICA DE LA CABECERA Y VERIFICACIÓN DE SESIÓN ---
     const datosUsuario = JSON.parse(localStorage.getItem('usuario'));
     const urlParams = new URLSearchParams(window.location.search);
     const idCurso = urlParams.get('id_curso');
@@ -125,20 +125,34 @@ $(document).ready(function() {
         return;
     }
 
-    // Lógica de la cabecera
     $("#user-name").text(datosUsuario.nombre);
     const iniciales = datosUsuario.nombre.split(' ').map(n => n[0]).join('');
     $("#user-initials").text(iniciales);
-    if(datosUsuario.rol === 'instructor' || datosUsuario.rol === 'admin') { $(".nav-links").append('<a href="mis_cursos.php">MIS CURSOS</a>'); } else { $(".nav-links").append('<a href="mis_inscripciones.php">MIS INSCRIPCIONES</a>'); }
-    $("#user-initials").on("click", function() { if (confirm("¿Deseas cerrar la sesión?")) { localStorage.removeItem('usuario'); window.location.href = 'inicio_sesion.php'; } });
-    $("#searchForm").on("submit", function(event) { event.preventDefault(); const t = $("#searchInput").val(); if (t.trim() !== '') { window.location.href = `dashboard.php?q=${t}`; } });
+    const paginaActual = window.location.pathname.split('/').pop();
+    let estiloInscripciones = (paginaActual === 'mis_inscripciones.php') ? 'style="color: #2563eb;"' : '';
+    let estiloCursos = (paginaActual === 'mis_cursos.php') ? 'style="color: #2563eb;"' : '';
+    $(".nav-links").append(`<a href="mis_inscripciones.php" ${estiloInscripciones}>MIS INSCRIPCIONES</a>`);
+    if (datosUsuario.rol === 'instructor' || datosUsuario.rol === 'admin') {
+        $(".nav-links").append(`<a href="mis_cursos.php" ${estiloCursos}>MIS CURSOS</a>`);
+    }
+    $("#user-initials").on("click", function() { if (confirm("¿Deseas cerrar la sesión?")) { localStorage.removeItem('usuario'); window.location.href = 'inicio_sesion.php'; }});
+    $("#searchFormGlobal").on("submit", function(event) { event.preventDefault(); const t = $("#searchInputGlobal").val(); if (t.trim() !== '') { window.location.href = `dashboard.php?q=${t}`; }});
 
-    // Aplicar máscaras a los inputs
+
+    // --- 2. LÓGICA DE LA PÁGINA DE PAGO ---
+
+    // Aplicar máscaras a los inputs de la tarjeta
     const cardMask = IMask(document.getElementById('numero_tarjeta'), { mask: '0000 0000 0000 0000' });
-    const dateMask = IMask(document.getElementById('fecha_vencimiento'), { mask: 'MM{/}YY', blocks: { MM: { mask: IMask.MaskedRange, from: 1, to: 12 }, YY: { mask: IMask.MaskedRange, from: 25, to: 99 } } });
+    const dateMask = IMask(document.getElementById('fecha_vencimiento'), {
+        mask: 'MM{/}YY',
+        blocks: {
+            MM: { mask: IMask.MaskedRange, from: 1, to: 12 },
+            YY: { mask: IMask.MaskedRange, from: parseInt(new Date().getFullYear().toString().substr(-2)), to: 99 }
+        }
+    });
     const cvvMask = IMask(document.getElementById('cvv'), { mask: '000' });
 
-    // Cargar resumen del curso
+    // Cargar resumen del curso en la tarjeta de la derecha
     $.ajax({
         url: `../api/obtenerCurso.php?id=${idCurso}`,
         method: 'GET',
@@ -151,7 +165,7 @@ $(document).ready(function() {
         }
     });
 
-    // Lógica del formulario de pago
+    // Lógica para enviar el formulario de pago
     $("#pagoForm").on("submit", function(event) {
         event.preventDefault();
         $("#mensaje").empty().removeClass("error exito");
@@ -159,9 +173,23 @@ $(document).ready(function() {
         let numero_tarjeta = cardMask.unmaskedValue;
         let fecha_vencimiento = dateMask.value;
         let cvv = cvvMask.unmaskedValue;
+        let nombre_tarjeta = $("#nombre_tarjeta").val().trim();
 
-        if (numero_tarjeta.length < 16 || fecha_vencimiento.length < 5 || cvv.length < 3) {
+        if (numero_tarjeta.length < 16 || fecha_vencimiento.length < 5 || cvv.length < 3 || nombre_tarjeta === '') {
             $("#mensaje").text("Por favor, completa todos los datos de pago.").addClass("error");
+            return;
+        }
+
+        // Validación de fecha de vencimiento (que no sea un mes pasado)
+        const [mesInput, anioInput] = fecha_vencimiento.split('/');
+        const mes = parseInt(mesInput, 10);
+        const anio = parseInt(anioInput, 10) + 2000;
+        const hoy = new Date();
+        const anioActual = hoy.getFullYear();
+        const mesActual = hoy.getMonth() + 1;
+
+        if (anio < anioActual || (anio === anioActual && mes < mesActual)) {
+            $("#mensaje").text("La fecha de vencimiento de la tarjeta ya ha pasado.").addClass("error");
             return;
         }
 
@@ -183,6 +211,7 @@ $(document).ready(function() {
                     let msg = $("<p>").text(response.mensaje + " ¡Felicidades!");
                     let link = $('<a>', { href: '../' + response.url_voucher, text: 'Descargar Voucher en PDF', target: '_blank' });
                     $("#mensaje").empty().append(msg).append("<br><br>").append(link).addClass("exito");
+                    
                     const downloadLink = document.createElement('a');
                     downloadLink.href = '../' + response.url_voucher;
                     downloadLink.download = response.url_voucher.split('/').pop();
