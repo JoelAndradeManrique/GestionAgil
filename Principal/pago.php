@@ -33,6 +33,31 @@
         #mensaje { margin-top: 15px; padding: 10px; border-radius: 8px; font-weight: bold; display: none; text-align: center; }
         #mensaje.exito { color: #155724; background-color: #d4edda; border: 1px solid #c3e6cb; display: block; }
         #mensaje.error { color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; display: block; }
+        .btn {
+            margin-top: 2rem;
+        }
+
+        #btn-pagar {
+            width: 100%;                  
+            background-color: #2563eb;    
+            color: white;                 
+            border: none;                 
+            padding: 15px 0;              
+            font-size: 1rem;              
+            font-weight: 700;             
+            border-radius: 10px;          
+            cursor: pointer;              
+            text-transform: uppercase;    
+            letter-spacing: 1px;          
+            transition: all 0.3s ease;    
+            box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.3);
+        }
+
+        #btn-pagar:hover {
+            background-color: #1e3a8a;    
+            box-shadow: 0 6px 20px 0 rgba(37, 99, 235, 0.4);
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
