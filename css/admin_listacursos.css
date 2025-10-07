@@ -1,0 +1,165 @@
+/* =================================================== */
+/* BASE Y LAYOUT GENERAL */
+/* =================================================== */
+
+body {
+    background-color: #f5f6f8; /* Fondo gris muy claro */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.main-content-wrapper {
+    /* Centra el contenido principal y da un ancho máximo */
+    max-width: 1400px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px 0 50px 0;
+}
+
+/* Contenedor principal para la lista de estudiantes */
+.course-details-block {
+    background-color: #fff;
+    padding: 25px 35px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* =================================================== */
+/* ENCABEZADO DE NAVEGACIÓN (NAVBAR - REUTILIZADO) */
+/* =================================================== */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px 5%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    color: #555;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #4a90e2; 
+}
+
+.navbar nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.user-avatar {
+    background-color: #6a1b9a;
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+/* =================================================== */
+/* TÍTULOS Y ENLACE DE REGRESO */
+/* =================================================== */
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: #4a90e2; /* Azul para el enlace */
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 25px;
+    transition: color 0.2s;
+}
+
+.back-link i {
+    margin-right: 8px;
+}
+
+.back-link:hover {
+    color: #337ab7;
+}
+
+.course-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 5px 0;
+}
+
+.course-subtitle {
+    font-size: 1rem;
+    color: #777;
+    margin-bottom: 30px;
+}
+
+/* =================================================== */
+/* TABLA DE ESTUDIANTES */
+/* =================================================== */
+
+.students-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.students-table thead th {
+    text-align: left;
+    padding: 10px 15px;
+    color: #888;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    border-bottom: 1px solid #eee;
+}
+
+.students-table tbody td {
+    padding: 15px;
+    font-size: 1rem;
+    color: #555;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.students-table tbody tr:last-child td {
+    border-bottom: none; /* Elimina el borde de la última fila */
+}
+
+.text-right {
+    text-align: right;
+}
+
+/* =================================================== */
+/* NOTA DE ADVERTENCIA */
+/* =================================================== */
+
+.warning-note {
+    /* Fondo amarillo muy claro */
+    background-color: #fffbe6; 
+    /* Borde izquierdo naranja/amarillo */
+    border-left: 5px solid #ffcc00; 
+    padding: 15px;
+    margin-top: 30px;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    color: #666;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.note-label {
+    font-weight: bold;
+    color: #e69500; /* Color naranja más fuerte para la palabra "Nota:" */
+    margin-right: 5px;
+}

@@ -1,0 +1,198 @@
+/* =================================================== */
+/* BASE Y LAYOUT GENERAL */
+/* =================================================== */
+
+body {
+    background-color: #f5f6f8; /* Fondo gris muy claro */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.main-content-wrapper {
+    /* Centra el contenido principal y da un ancho máximo */
+    max-width: 1400px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px 0 50px 0;
+}
+
+/* =================================================== */
+/* ENCABEZADO DE NAVEGACIÓN (NAVBAR - REUTILIZADO) */
+/* =================================================== */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px 5%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    color: #555;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #4a90e2; 
+}
+
+.navbar nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.user-avatar {
+    background-color: #6a1b9a;
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+/* =================================================== */
+/* TÍTULO Y BARRA DE BÚSQUEDA SUPERIOR */
+/* =================================================== */
+
+.header-and-search {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.page-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #444;
+    margin: 0;
+}
+
+.search-bar-wide {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 15px;
+    background-color: #fff;
+    max-width: 300px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.search-bar-wide i {
+    color: #aaa;
+    margin-right: 10px;
+}
+
+.search-bar-wide input {
+    border: none;
+    flex-grow: 1;
+    padding: 5px 0;
+    outline: none;
+    font-size: 0.95rem;
+}
+
+/* =================================================== */
+/* BLOQUE DE PROFESOR Y TARJETAS */
+/* =================================================== */
+
+.professor-section {
+    margin-bottom: 35px;
+}
+
+.professor-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.professor-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+    border: 2px solid #6a1b9a; /* Borde morado para el avatar */
+}
+
+.professor-name-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Contenedor de las tarjetas - Usa Flexbox para alinearlas */
+.course-cards-container {
+    display: flex;
+    gap: 20px; /* Espacio entre las tarjetas */
+    flex-wrap: wrap; /* Permite que las tarjetas salten de línea en espacios pequeños */
+    margin-left: 45px; /* Alinea las tarjetas bajo el nombre del profesor */
+}
+
+.course-card {
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    padding: 15px;
+    width: 250px; /* Ancho fijo para cada tarjeta */
+    transition: box-shadow 0.3s;
+    border-left: 5px solid transparent; /* Inicialmente transparente para el efecto hover */
+}
+
+.course-card:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    border-left: 5px solid #4a90e2; /* Borde de color al pasar el ratón */
+}
+
+.card-course-title {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #4a90e2; /* Color de enlace azul */
+    text-decoration: none;
+    margin-bottom: 5px;
+}
+
+.card-course-title:hover {
+    text-decoration: underline;
+}
+
+.card-course-category {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #777;
+}
+
+/* Media Query para responsividad */
+@media (max-width: 768px) {
+    .header-and-search {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .search-bar-wide {
+        max-width: 100%;
+        width: 100%;
+        margin-top: 15px;
+    }
+    .course-cards-container {
+        margin-left: 0; /* Elimina el margen en móviles */
+        justify-content: center; /* Centra las tarjetas si es necesario */
+    }
+    .course-card {
+        width: 100%; /* Las tarjetas ocupan todo el ancho en móviles */
+        max-width: 350px;
+    }
+}

@@ -1,0 +1,206 @@
+/* =================================================== */
+/* BASE Y LAYOUT GENERAL */
+/* =================================================== */
+
+body {
+    background-color: #f5f6f8; /* Fondo gris muy claro */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.main-content-wrapper {
+    /* Centra el contenido principal y da un ancho máximo */
+    max-width: 1400px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px 0 50px 0;
+}
+
+.page-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 30px;
+}
+
+/* =================================================== */
+/* ENCABEZADO DE NAVEGACIÓN (NAVBAR) */
+/* =================================================== */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px 5%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    color: #555;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #4a90e2; /* Color principal de la marca */
+}
+
+.navbar nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #555;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.navbar a:hover {
+    color: #4a90e2;
+}
+
+.user-avatar {
+    background-color: #6a1b9a; /* Color morado para el avatar */
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+/* =================================================== */
+/* BLOQUE DE PROFESOR (TARJETA) */
+/* =================================================== */
+
+.professor-block {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    margin-bottom: 40px;
+}
+
+.professor-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.professor-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+    border: 3px solid #6a1b9a; /* Borde de color para el avatar */
+}
+
+.professor-name {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #333;
+}
+
+.professor-title {
+    margin: 0;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+/* =================================================== */
+/* BARRA DE BÚSQUEDA Y TABLA DE CURSOS */
+/* =================================================== */
+
+.search-bar-small {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 15px;
+    margin-bottom: 20px;
+    max-width: 400px; /* Limita el ancho de la barra de búsqueda */
+    background-color: #f9f9f9;
+}
+
+.search-bar-small i {
+    color: #aaa;
+    margin-right: 10px;
+}
+
+.search-bar-small input {
+    border: none;
+    flex-grow: 1;
+    padding: 5px 0;
+    outline: none;
+    background-color: transparent;
+    font-size: 0.95rem;
+}
+
+/* Estilos de la tabla */
+.courses-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.courses-table th {
+    text-align: left;
+    padding: 10px 15px 10px 0;
+    color: #888;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    border-bottom: 1px solid #eee;
+}
+
+.courses-table td {
+    padding: 12px 15px 12px 0;
+    font-size: 1rem;
+    color: #555;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.courses-table td a {
+    color: #4a90e2; /* Color de enlace para el nombre del curso */
+    text-decoration: none;
+}
+
+.courses-table td a:hover {
+    text-decoration: underline;
+}
+
+.text-right {
+    text-align: right;
+}
+
+/* Media Query para responsividad */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .navbar nav {
+        margin-top: 10px;
+    }
+    .main-content-wrapper {
+        width: 95%;
+    }
+    .search-bar-small {
+        max-width: 100%;
+    }
+    .courses-table th, .courses-table td {
+        padding: 8px 10px 8px 0;
+    }
+}
