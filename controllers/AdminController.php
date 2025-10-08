@@ -56,5 +56,16 @@ class AdminController {
 
         return ['estado' => 200, 'datos' => $resultado_final];
     }
+
+    public function obtenerTodosLosInstructores() {
+    $instructores = $this->modeloAdmin->getInstructores();
+    return ['estado' => 200, 'datos' => $instructores];
+}
+
+// controllers/AdminController.php
+public function obtenerTodosLosAlumnos() {
+    $alumnos = $this->modeloAdmin->getAlumnos();
+    return ['estado' => 200, 'datos' => $alumnos];
+}
 }
 ?>

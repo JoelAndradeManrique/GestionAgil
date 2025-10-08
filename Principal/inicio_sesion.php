@@ -45,33 +45,50 @@
     </main>
 
   <script>
-    $(document).ready(function() {
-      $("#loginForm").on("submit", function(event) {
+   $(document).ready(function() {
+    $("#loginForm").on("submit", function(event) {
         event.preventDefault();
         $("#mensaje").empty().removeClass("error exito");
+        
         let email = $("#email").val().trim();
         let contrasena = $("#contrasena").val().trim();
+
         if (email === '' || contrasena === '') {
-          $("#mensaje").text("Por favor, completa todos los campos.").addClass("error");
-          return;
+            $("#mensaje").text("Por favor, completa todos los campos.").addClass("error");
+            return;
         }
+
         $.ajax({
-          url: '../api/login.php',
-          method: 'POST',
-          contentType: 'application/json',
-          data: JSON.stringify({ email: email, contrasena: contrasena }),
-          success: function(response) {
-            $("#mensaje").text("¡Bienvenido, " + response.datos.nombre + "! Redirigiendo...").addClass("exito");
-            localStorage.setItem('usuario', JSON.stringify(response.datos));
-            setTimeout(function() { window.location.href = 'dashboard.php'; }, 2000);
-          },
-          error: function(jqXHR) {
-            let errorMsg = jqXHR.responseJSON ? jqXHR.responseJSON.mensaje : "Error desconocido.";
-            $("#mensaje").text(errorMsg).addClass("error");
-          }
+            url: '../api/login.php',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ email: email, contrasena: contrasena }),
+            
+            // ✅ AQUÍ OCURRE LA MAGIA
+            success: function(response) {
+                // Primero, guardamos los datos del usuario como siempre
+                localStorage.setItem('usuario', JSON.stringify(response.datos));
+                
+                $("#mensaje").text("¡Bienvenido, " + response.datos.nombre + "! Redirigiendo...").addClass("exito");
+
+                // Ahora, decidimos a dónde redirigir basándonos en el rol
+                setTimeout(function() {
+                    if (response.datos.rol === 'admin') {
+                        // Si es admin, va directo a su panel
+                        window.location.href = 'admin-dashboard.php';
+                    } else {
+                        // Si es alumno o instructor, va al dashboard general
+                        window.location.href = 'dashboard.php';
+                    }
+                }, 1500); // Un poco menos de espera
+            },
+            error: function(jqXHR) {
+                let errorMsg = jqXHR.responseJSON ? jqXHR.responseJSON.mensaje : "Error desconocido.";
+                $("#mensaje").text(errorMsg).addClass("error");
+            }
         });
-      });
     });
+});
   </script>
 </body>
 </html>
